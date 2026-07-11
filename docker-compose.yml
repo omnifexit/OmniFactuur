@@ -9,7 +9,7 @@ services:
       - "8080"
 
     environment:
-      # Coolify routeert het gegenereerde domein naar containerpoort 8080
+      # Laat Coolify het publieke domein naar containerpoort 8080 routeren.
       - SERVICE_URL_OMNIFACTUUR_8080
 
       # Applicatie
@@ -18,9 +18,9 @@ services:
       - APP_DEBUG=false
       - APP_KEY=${SERVICE_BASE64_32_APPKEY}
 
-      # Openbare URL
-      - APP_URL=${PUBLIC_URL:?}
-      - ASSET_URL=${PUBLIC_URL:?}
+      # Exacte openbare URL
+      - APP_URL=http://a36swup45zd03ljw559g076n.213.239.220.245.sslip.io
+      - ASSET_URL=http://a36swup45zd03ljw559g076n.213.239.220.245.sslip.io
 
       # Taal en tijdzone
       - APP_TIMEZONE=Europe/Amsterdam
@@ -30,17 +30,16 @@ services:
       # Reverse proxy
       - TRUSTED_PROXIES=*
 
-      # Sessies
+      # Sessies en authenticatie
       - SESSION_DRIVER=file
       - SESSION_LIFETIME=240
       - SESSION_ENCRYPT=false
       - SESSION_PATH=/
-      - SESSION_DOMAIN=${PUBLIC_HOST:?}
+      - SESSION_DOMAIN=a36swup45zd03ljw559g076n.213.239.220.245.sslip.io
+      - SESSION_HTTP_ONLY=true
       - SESSION_SAME_SITE=lax
       - SESSION_SECURE_COOKIE=false
-
-      # Laravel Sanctum
-      - SANCTUM_STATEFUL_DOMAINS=${PUBLIC_HOST:?}
+      - SANCTUM_STATEFUL_DOMAINS=a36swup45zd03ljw559g076n.213.239.220.245.sslip.io
 
       # PostgreSQL
       - DB_CONNECTION=pgsql
