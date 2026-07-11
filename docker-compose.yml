@@ -4,17 +4,13 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    expose:
-      - "8080"
-    environment:
-    environment:
+
     expose:
       - "8080"
 
     environment:
-      # Publiek Coolify-domein; Coolify gebruikt de eerste exposed poort 8080
-      - SERVICE_URL_OMNIFACTUUR
-      - SERVICE_FQDN_OMNIFACTUUR
+      # Coolify routeert het gegenereerde domein naar containerpoort 8080
+      - SERVICE_URL_OMNIFACTUUR_8080
 
       # Applicatie
       - APP_NAME=OmniFactuur
@@ -22,9 +18,9 @@ services:
       - APP_DEBUG=false
       - APP_KEY=${SERVICE_BASE64_32_APPKEY}
 
-      # Openbare URL — bewust zonder _8080
-      - APP_URL=${SERVICE_URL_OMNIFACTUUR}
-      - ASSET_URL=${SERVICE_URL_OMNIFACTUUR}
+      # Openbare URL
+      - APP_URL=${PUBLIC_URL:?}
+      - ASSET_URL=${PUBLIC_URL:?}
 
       # Taal en tijdzone
       - APP_TIMEZONE=Europe/Amsterdam
@@ -39,14 +35,12 @@ services:
       - SESSION_LIFETIME=240
       - SESSION_ENCRYPT=false
       - SESSION_PATH=/
-      - SESSION_DOMAIN=${SERVICE_FQDN_OMNIFACTUUR}
+      - SESSION_DOMAIN=${PUBLIC_HOST:?}
       - SESSION_SAME_SITE=lax
       - SESSION_SECURE_COOKIE=false
 
-      # Laravel Sanctum — bewust zonder _8080
-      - SANCTUM_STATEFUL_DOMAINS=${SERVICE_FQDN_OMNIFACTUUR}
       # Laravel Sanctum
-      - SANCTUM_STATEFUL_DOMAINS=${SERVICE_FQDN_OMNIFACTUUR_8080}
+      - SANCTUM_STATEFUL_DOMAINS=${PUBLIC_HOST:?}
 
       # PostgreSQL
       - DB_CONNECTION=pgsql
@@ -57,9 +51,8 @@ services:
       - DB_PASSWORD=${SERVICE_PASSWORD_64_DATABASE}
       - DB_PASSWORD_FILE=
 
+      # Laravel / PHP
       - CACHE_STORE=file
-      - SESSION_DRIVER=file
-      - SESSION_LIFETIME=240
       - QUEUE_CONNECTION=sync
       - AUTORUN_ENABLED=true
       - AUTORUN_LARAVEL_MIGRATION=false
@@ -68,9 +61,11 @@ services:
       - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-512M}
       - PHP_UPLOAD_MAX_FILE_SIZE=${PHP_UPLOAD_MAX_FILE_SIZE:-64M}
       - PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE:-64M}
+
     volumes:
       - omnifactuur_storage:/var/www/html/storage
       - omnifactuur_modules:/var/www/html/Modules
+
     depends_on:
       database:
         condition: service_healthy
@@ -78,12 +73,15 @@ services:
   database:
     image: postgres:15
     restart: unless-stopped
+
     environment:
       - POSTGRES_DB=${DB_DATABASE:-omnifactuur}
       - POSTGRES_USER=${DB_USERNAME:-omnifactuur}
       - POSTGRES_PASSWORD=${SERVICE_PASSWORD_64_DATABASE}
+
     volumes:
       - omnifactuur_postgres:/var/lib/postgresql/data
+
     healthcheck:
       test:
         - CMD-SHELL
