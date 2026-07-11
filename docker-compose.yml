@@ -7,8 +7,8 @@ services:
     expose:
       - "8080"
     environment:
-      # Coolify maakt een URL aan en routeert die naar containerpoort 8080.
-      # Coolify routeert dit domein naar containerpoort 8080
+    environment:
+      # Coolify koppelt het domein aan containerpoort 8080
       - SERVICE_URL_OMNIFACTUUR_8080
 
       # Applicatie
@@ -17,9 +17,9 @@ services:
       - APP_DEBUG=false
       - APP_KEY=${SERVICE_BASE64_32_APPKEY}
 
-      # Exacte openbare URL
-      - APP_URL=http://gybn6wma5nqvhl9s656u3inb.213.239.220.245.sslip.io
-      - ASSET_URL=http://gybn6wma5nqvhl9s656u3inb.213.239.220.245.sslip.io
+      # Openbare URL
+      - APP_URL=${SERVICE_URL_OMNIFACTUUR_8080}
+      - ASSET_URL=${SERVICE_URL_OMNIFACTUUR_8080}
 
       # Taal en tijdzone
       - APP_TIMEZONE=Europe/Amsterdam
@@ -32,14 +32,14 @@ services:
       # Sessies
       - SESSION_DRIVER=file
       - SESSION_LIFETIME=240
+      - SESSION_ENCRYPT=false
       - SESSION_PATH=/
-      - SESSION_DOMAIN=null
-      - SESSION_COOKIE=omnifactuur_session_v2
+      - SESSION_DOMAIN=${SERVICE_FQDN_OMNIFACTUUR_8080}
       - SESSION_SAME_SITE=lax
       - SESSION_SECURE_COOKIE=false
 
       # Laravel Sanctum
-      - SANCTUM_STATEFUL_DOMAINS=gybn6wma5nqvhl9s656u3inb.213.239.220.245.sslip.io,gybn6wma5nqvhl9s656u3inb.213.239.220.245.sslip.io:80
+      - SANCTUM_STATEFUL_DOMAINS=${SERVICE_FQDN_OMNIFACTUUR_8080}
 
       # PostgreSQL
       - DB_CONNECTION=pgsql
