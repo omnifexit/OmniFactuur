@@ -1,0 +1,48 @@
+{
+    "name": "invoiceshelf/modules",
+    "description": "InvoiceShelf-specific extensions for nwidart/laravel-modules — registry for module-contributed sidebar items and settings schemas.",
+    "keywords": [
+        "invoiceshelf",
+        "modules",
+        "laravel"
+    ],
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": "^8.3",
+        "nwidart/laravel-modules": "^13.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.16",
+        "orchestra/testbench": "^10.0",
+        "phpunit/phpunit": "^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "InvoiceShelf\\Modules\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "InvoiceShelf\\Modules\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "InvoiceShelf\\Modules\\InvoiceShelfModulesServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "lint": "vendor/bin/pint"
+    },
+    "config": {
+        "allow-plugins": {
+            "wikimedia/composer-merge-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

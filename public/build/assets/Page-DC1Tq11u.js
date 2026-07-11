@@ -1,0 +1,1 @@
+import{R as e,U as t,b as n}from"./vue.runtime.esm-bundler-56z_v_HH.js";import{t as r}from"./_plugin-vue_export-helper-S3RvzygF.js";var i={},a={class:`flex-1 p-4 md:p-8 flex flex-col`};function o(r,i){return e(),n(`div`,a,[t(r.$slots,`default`)])}var s=r(i,[[`render`,o]]);export{s as t};

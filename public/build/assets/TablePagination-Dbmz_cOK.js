@@ -1,0 +1,1 @@
+import{t as e}from"./TablePagination-GMyw_kij.js";export{e as default};

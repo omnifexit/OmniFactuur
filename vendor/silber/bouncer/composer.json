@@ -1,0 +1,88 @@
+{
+    "name": "silber/bouncer",
+    "description": "Eloquent roles and abilities.",
+    "keywords": [
+        "abilities",
+        "acl",
+        "capabilities",
+        "eloquent",
+        "laravel",
+        "permissions",
+        "roles"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joseph Silber",
+            "email": "contact@josephsilber.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Silber\\Bouncer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Silber\\Bouncer\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "illuminate/auth": "^11.0|^12.0|^13.0",
+        "illuminate/cache": "^11.0|^12.0|^13.0",
+        "illuminate/container": "^11.0|^12.0|^13.0",
+        "illuminate/contracts": "^11.0|^12.0|^13.0",
+        "illuminate/database": "^11.0|^12.0|^13.0"
+    },
+    "require-dev": {
+        "illuminate/console": "^11.0|^12.0|^13.0",
+        "illuminate/events": "^11.0|^12.0|^13.0",
+        "phpunit/phpunit": "^11.0",
+        "orchestra/testbench": "^9.0|^10.0|^11.0",
+        "pestphp/pest": "^3.7",
+        "laravel/pint": "^1.14"
+    },
+    "suggest": {
+        "illuminate/console": "Allows running the bouncer:clean artisan command",
+        "illuminate/events": "Required for multi-tenancy support"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve"
+        ],
+        "lint": [
+            "@php vendor/bin/phpstan analyse"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Silber\\Bouncer\\BouncerServiceProvider"
+            ],
+            "aliases": {
+                "Bouncer": "Silber\\Bouncer\\BouncerFacade"
+            }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

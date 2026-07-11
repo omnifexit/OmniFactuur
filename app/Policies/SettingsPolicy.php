@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\Company;
+use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class SettingsPolicy
+{
+    use HandlesAuthorization;
+
+    public function manageCompany(User $user, Company $company)
+    {
+        if ($user->id == $company->owner_id) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function manageBackups(User $user)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function manageFileDisk(User $user)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function manageEmailConfig(User $user)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function manageAiConfig(User $user)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Any authenticated user with an active company context can use AI features,
+     * subject to the per-company kill-switch in AiConfigurationService.
+     */
+    public function useAi(User $user)
+    {
+        return $user !== null;
+    }
+
+    public function managePDFConfig(User $user)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function manageSettings(User $user)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        return false;
+    }
+}

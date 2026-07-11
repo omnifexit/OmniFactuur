@@ -1,0 +1,1 @@
+function e(e){return Array.isArray(e)?e[0]??``:e??``}function t(e,t=``){let n=t.replace(/^\/+/,``);return n?`/${e}/customer/${n}`:`/${e}/customer`}function n(e,n){let r=n.replace(/^\/+/,``);return r===`customer`?`/${e}/customer`:r.startsWith(`customer/`)?`/${e}/${r}`:t(e,r)}export{n,e as r,t};

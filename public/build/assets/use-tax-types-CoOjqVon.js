@@ -1,0 +1,1 @@
+import{ut as e}from"./vue.runtime.esm-bundler-56z_v_HH.js";import{r as t}from"./error-handling-S7N4FACK.js";import{t as n}from"./tax-type.service-Dm3lCelU.js";function r(){let r=e([]);async function i(){try{return r.value=(await n.list({limit:`all`})).data,r.value}catch(e){throw t(e),e}}return{taxTypes:r,fetchTaxTypes:i}}export{r as t};

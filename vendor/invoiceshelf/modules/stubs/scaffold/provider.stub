@@ -1,0 +1,151 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Illuminate\Support\Str;
+use InvoiceShelf\Modules\Registry as ModuleRegistry;
+use InvoiceShelf\Modules\Support\ModuleServiceProvider;
+
+class $CLASS$ extends ModuleServiceProvider
+{
+    /**
+     * The name of the module.
+     */
+    protected string $name = '$MODULE$';
+
+    /**
+     * The lowercase version of the module name (used as the i18n namespace
+     * by nwidart: `$LOWER_NAME$::menu.title` resolves to lang/en/menu.php).
+     */
+    protected string $nameLower = '$LOWER_NAME$';
+
+    /**
+     * Command classes to register.
+     *
+     * @var string[]
+     */
+    // protected array $commands = [];
+
+    /**
+     * Provider classes to register.
+     *
+     * @var string[]
+     */
+    protected array $providers = [
+        EventServiceProvider::class,
+        RouteServiceProvider::class,
+    ];
+
+    public function boot(): void
+    {
+        parent::boot();
+
+        // Kebab-case slug used for URL segments and as the Registry key.
+        // The host app's CompanyModulesController normalizes `modules.name`
+        // (PascalCase in the DB) to this form when looking up the schema.
+        $slug = Str::kebab($this->name);
+
+        // -------------------------------------------------------------------
+        // Sidebar entry — appears in the company sidebar's dynamic Modules
+        // group and in the /admin/modules Active Modules index. The link
+        // points to the host app's schema-rendered settings page.
+        //
+        // Replace the icon with any Heroicon name your module prefers.
+        // -------------------------------------------------------------------
+        ModuleRegistry::registerMenu($slug, [
+            'title' => $this->nameLower.'::menu.title',
+            'link' => '/admin/modules/'.$slug.'/settings',
+            'icon' => 'PuzzlePieceIcon',
+        ]);
+
+        // -------------------------------------------------------------------
+        // Settings schema — rendered generically by the host app's
+        // BaseSchemaForm.vue. Values persist per-company in company_settings
+        // under the key prefix `module.{slug}.{field_key}`.
+        //
+        // Supported field types: text, password, textarea, switch, number,
+        // select, multiselect. Each field's `rules` array maps directly to
+        // Laravel validator rules on the server side.
+        //
+        // Delete this entire call if your module doesn't need settings —
+        // the dynamic sidebar entry will still appear, it just won't be
+        // clickable through to a settings page.
+        // -------------------------------------------------------------------
+        ModuleRegistry::registerSettings($slug, [
+            'sections' => [
+                [
+                    'title' => $this->nameLower.'::settings.general_section',
+                    'fields' => [
+                        [
+                            'key' => 'enabled',
+                            'type' => 'switch',
+                            'label' => $this->nameLower.'::settings.enabled',
+                            'default' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        // -------------------------------------------------------------------
+        // Custom exchange rate driver — uncomment if your module ships one.
+        //
+        // The driver class must extend App\Services\ExchangeRate\ExchangeRateDriver
+        // and implement getExchangeRate(), getSupportedCurrencies(), and
+        // validateConnection(). The host's ExchangeRateProviderModal will pick
+        // up `label`, `website`, and any `config_fields` automatically.
+        //
+        // `config_fields` describe the shape of the driver_config JSON column
+        // and accept the same `text` / `select` types as module settings, plus
+        // a `visible_when` map for conditional fields.
+        // -------------------------------------------------------------------
+        // ModuleRegistry::registerExchangeRateDriver('my_provider', [
+        //     'class' => \Modules\\$MODULE$\\Drivers\\MyExchangeRateDriver::class,
+        //     'label' => $this->nameLower.'::drivers.my_provider',
+        //     'website' => 'https://my-provider.com',
+        //     'config_fields' => [
+        //         [
+        //             'key' => 'region',
+        //             'type' => 'select',
+        //             'label' => $this->nameLower.'::drivers.region',
+        //             'options' => [
+        //                 ['label' => $this->nameLower.'::drivers.region_us', 'value' => 'us'],
+        //                 ['label' => $this->nameLower.'::drivers.region_eu', 'value' => 'eu'],
+        //             ],
+        //             'default' => 'us',
+        //         ],
+        //     ],
+        // ]);
+
+        // -------------------------------------------------------------------
+        // Custom AI driver — uncomment if your module ships one.
+        //
+        // The driver class must extend App\Support\Ai\AiDriver and implement
+        // chatCompletion(), textCompletion(), and validateConnection(). The
+        // host's AI configuration UI will pick up `label`, `website`,
+        // `supported_roles`, `suggested_models`, and any `config_fields`.
+        //
+        // `supported_roles` tells the host which role slots this driver can
+        // fulfill. v1 roles: 'chat', 'text_generation'.
+        // -------------------------------------------------------------------
+        // ModuleRegistry::registerAiDriver('my_ai_provider', [
+        //     'class' => \Modules\\$MODULE$\\Drivers\\MyAiDriver::class,
+        //     'label' => $this->nameLower.'::drivers.my_ai',
+        //     'website' => 'https://my-ai.example.com',
+        //     'default_base_url' => 'https://api.my-ai.example.com/v1',
+        //     'supported_roles' => ['chat', 'text_generation'],
+        //     'suggested_models' => [
+        //         ['value' => 'model-a', 'label' => 'Model A'],
+        //         ['value' => 'model-b', 'label' => 'Model B'],
+        //     ],
+        // ]);
+    }
+
+    /**
+     * Define module schedules.
+     */
+    // protected function configureSchedules(Schedule $schedule): void
+    // {
+    //     $schedule->command('inspire')->hourly();
+    // }
+}

@@ -1,0 +1,1 @@
+import{R as e,U as t,_ as n,b as r}from"./vue.runtime.esm-bundler-56z_v_HH.js";import{t as i}from"./_plugin-vue_export-helper-S3RvzygF.js";var a={},o={class:`flex flex-wrap py-4 text-heading rounded list-reset`};function s(i,a){return e(),r(`nav`,null,[n(`ol`,o,[t(i.$slots,`default`)])])}var c=i(a,[[`render`,s]]);export{c as t};

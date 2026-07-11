@@ -1,0 +1,1 @@
+import{i as e,r as t}from"./local-storage-DuQCXLd0.js";import{t as n}from"./constants-BCQekKde.js";function r(t,r){e(n.INSTALL_AUTH_TOKEN,t),i(r)}function i(r){if(r==null||r===``){t(n.INSTALL_SELECTED_COMPANY);return}e(n.INSTALL_SELECTED_COMPANY,String(r))}function a(){t(n.INSTALL_AUTH_TOKEN),t(n.INSTALL_SELECTED_COMPANY)}export{r as n,i as r,a as t};

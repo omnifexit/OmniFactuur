@@ -1,0 +1,1 @@
+import{t as e}from"./ContentPlaceholderHeading-BQ7MJadW.js";export{e as default};

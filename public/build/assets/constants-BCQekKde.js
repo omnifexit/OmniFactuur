@@ -1,0 +1,1 @@
+var e={LIGHT:`light`,DARK:`dark`,SYSTEM:`system`},t={AUTH_TOKEN:`auth.token`,INSTALL_AUTH_TOKEN:`install.auth.token`,INSTALL_SELECTED_COMPANY:`install.selectedCompany`,SELECTED_COMPANY:`selectedCompany`,IS_ADMIN_MODE:`isAdminMode`,SIDEBAR_COLLAPSED:`sidebarCollapsed`,THEME:`theme`};export{e as n,t};
