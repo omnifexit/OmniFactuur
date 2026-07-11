@@ -8,8 +8,13 @@ services:
       - "8080"
     environment:
     environment:
-      # Coolify koppelt het domein aan containerpoort 8080
-      - SERVICE_URL_OMNIFACTUUR_8080
+    expose:
+      - "8080"
+
+    environment:
+      # Publiek Coolify-domein; Coolify gebruikt de eerste exposed poort 8080
+      - SERVICE_URL_OMNIFACTUUR
+      - SERVICE_FQDN_OMNIFACTUUR
 
       # Applicatie
       - APP_NAME=OmniFactuur
@@ -17,9 +22,9 @@ services:
       - APP_DEBUG=false
       - APP_KEY=${SERVICE_BASE64_32_APPKEY}
 
-      # Openbare URL
-      - APP_URL=${SERVICE_URL_OMNIFACTUUR_8080}
-      - ASSET_URL=${SERVICE_URL_OMNIFACTUUR_8080}
+      # Openbare URL — bewust zonder _8080
+      - APP_URL=${SERVICE_URL_OMNIFACTUUR}
+      - ASSET_URL=${SERVICE_URL_OMNIFACTUUR}
 
       # Taal en tijdzone
       - APP_TIMEZONE=Europe/Amsterdam
@@ -34,10 +39,12 @@ services:
       - SESSION_LIFETIME=240
       - SESSION_ENCRYPT=false
       - SESSION_PATH=/
-      - SESSION_DOMAIN=${SERVICE_FQDN_OMNIFACTUUR_8080}
+      - SESSION_DOMAIN=${SERVICE_FQDN_OMNIFACTUUR}
       - SESSION_SAME_SITE=lax
       - SESSION_SECURE_COOKIE=false
 
+      # Laravel Sanctum — bewust zonder _8080
+      - SANCTUM_STATEFUL_DOMAINS=${SERVICE_FQDN_OMNIFACTUUR}
       # Laravel Sanctum
       - SANCTUM_STATEFUL_DOMAINS=${SERVICE_FQDN_OMNIFACTUUR_8080}
 
